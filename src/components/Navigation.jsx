@@ -1,12 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
-import { useAppTheme } from '../hooks/useTheme'
 import ThemeToggle from './ThemeToggle'
 import './Navigation.css'
 
-function Navigation() {
+function Navigation({ mode, toggleTheme }) {
   const location = useLocation()
-  const { mode, toggleTheme } = useAppTheme()
 
   return (
     <AppBar position="static">

@@ -1,12 +1,26 @@
-.app-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
   min-height: 100vh;
 }
 
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .main-content {
-  min-height: calc(100vh - 200px);
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 .technologies-list {
@@ -20,7 +34,7 @@
     grid-template-columns: 1fr;
   }
   
-  .app-container {
+  .main-content {
     padding: 1rem;
   }
 }

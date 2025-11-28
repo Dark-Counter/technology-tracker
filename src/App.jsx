@@ -10,11 +10,11 @@ import TechnologyDetail from './pages/TechnologyDetail'
 import AddTechnology from './pages/AddTechnology'
 import DataManagement from './pages/DataManagement'
 
-function AppContent() {
+function AppContent({ mode, toggleTheme }) {
   return (
     <Router basename="/technology-tracker">
       <div className="app-container">
-        <Navigation />
+        <Navigation mode={mode} toggleTheme={toggleTheme} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -30,13 +30,13 @@ function AppContent() {
 }
 
 function App() {
-  const { theme } = useAppTheme()
+  const { theme, mode, toggleTheme } = useAppTheme()
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <NotificationProvider>
-        <AppContent />
+        <AppContent mode={mode} toggleTheme={toggleTheme} />
       </NotificationProvider>
     </ThemeProvider>
   )
