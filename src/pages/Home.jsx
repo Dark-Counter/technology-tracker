@@ -258,9 +258,24 @@ function Home() {
           </Grid>
         )}
 
-        {/* Dashboard без белой обертки */}
+        {/* Dashboard - прозрачный на градиенте */}
         {!loading && technologies && technologies.length > 0 && (
-          <Box sx={{ mb: 4 }}>
+          <Box sx={{ 
+            mb: 4,
+            '& .MuiCard-root': {
+              background: isDark 
+                ? alpha(theme.palette.background.paper, 0.3)
+                : 'rgba(255, 255, 255, 0.2)',
+              backdropFilter: 'blur(10px)',
+              border: isDark 
+                ? `1px solid ${alpha(theme.palette.divider, 0.3)}`
+                : '1px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+            },
+            '& .MuiTypography-root': {
+              color: isDark ? 'text.primary' : 'rgba(255, 255, 255, 0.95)'
+            }
+          }}>
             <Dashboard technologies={technologies} />
           </Box>
         )}
