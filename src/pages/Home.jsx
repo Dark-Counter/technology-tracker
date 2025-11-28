@@ -7,9 +7,9 @@ import {
   CardContent, 
   Typography, 
   Box,
-  Paper,
   Stack,
-  useTheme
+  useTheme,
+  alpha
 } from '@mui/material'
 import Dashboard from '../components/Dashboard'
 import useTechnologiesApi from '../hooks/useTechnologiesApi'
@@ -19,6 +19,8 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import NotesIcon from '@mui/icons-material/Notes'
 import SearchIcon from '@mui/icons-material/Search'
 import SaveIcon from '@mui/icons-material/Save'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ScheduleIcon from '@mui/icons-material/Schedule'
 import './Page.css'
 import './Home.css'
 
@@ -42,44 +44,18 @@ function Home() {
   return (
     <Box sx={{ 
       minHeight: '100vh',
+      width: '100%',
       background: isDark 
-        ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
-        : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        ? 'linear-gradient(180deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%)'
+        : 'linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f5f7fa 100%)',
       position: 'relative',
-      overflow: 'hidden',
-      pb: 4
+      overflow: 'hidden'
     }}>
-      {/* Декоративные элементы */}
-      {!isDark && (
-        <>
-          <Box sx={{
-            position: 'absolute',
-            top: -100,
-            right: -100,
-            width: 400,
-            height: 400,
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.1)',
-            filter: 'blur(60px)'
-          }} />
-          <Box sx={{
-            position: 'absolute',
-            bottom: -150,
-            left: -150,
-            width: 500,
-            height: 500,
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.1)',
-            filter: 'blur(80px)'
-          }} />
-        </>
-      )}
-
-      <Container maxWidth="lg" sx={{ py: 6, position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="xl" sx={{ py: 4, position: 'relative', zIndex: 1 }}>
         {/* Hero секция */}
         <Box sx={{ 
           textAlign: 'center', 
-          mb: 6,
+          mb: 5,
           color: isDark ? 'text.primary' : 'white'
         }}>
           <Typography 
@@ -87,19 +63,21 @@ function Home() {
             component="h1" 
             gutterBottom
             sx={{
-              fontWeight: 700,
-              mb: 2,
-              textShadow: isDark ? 'none' : '0 2px 10px rgba(0,0,0,0.2)'
+              fontWeight: 800,
+              mb: 1.5,
+              fontSize: { xs: '2rem', md: '3rem' },
+              textShadow: isDark ? 'none' : '0 2px 20px rgba(0,0,0,0.3)'
             }}
           >
             🚀 Трекер технологий
           </Typography>
           <Typography 
-            variant="h5" 
+            variant="h6" 
             sx={{ 
               mb: 4,
-              opacity: isDark ? 0.9 : 0.95,
-              fontWeight: 300
+              opacity: isDark ? 0.8 : 0.9,
+              fontWeight: 300,
+              fontSize: { xs: '1rem', md: '1.25rem' }
             }}
           >
             Отслеживайте свой прогресс в изучении технологий разработки
@@ -108,7 +86,7 @@ function Home() {
             direction={{ xs: 'column', sm: 'row' }} 
             spacing={2} 
             justifyContent="center"
-            sx={{ mb: 6 }}
+            sx={{ mb: 5 }}
           >
             <Button
               variant="contained"
@@ -118,42 +96,48 @@ function Home() {
               sx={{
                 py: 1.5,
                 px: 4,
-                fontSize: '1.1rem',
+                fontSize: '1rem',
                 fontWeight: 600,
-                borderRadius: 3,
-                boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+                borderRadius: 2,
+                textTransform: 'none',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
                 '&:hover': {
                   transform: 'translateY(-2px)',
-                  boxShadow: '0 12px 24px rgba(0,0,0,0.3)'
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.3)'
                 },
-                transition: 'all 0.3s ease'
+                transition: 'all 0.2s ease'
               }}
             >
-              Посмотреть все технологии
+              Все технологии
             </Button>
             <Button
-              variant={isDark ? "contained" : "outlined"}
+              variant={isDark ? "outlined" : "contained"}
               size="large"
               onClick={() => navigate('/add-technology')}
               startIcon={<AddCircleOutlineIcon />}
               sx={{
                 py: 1.5,
                 px: 4,
-                fontSize: '1.1rem',
+                fontSize: '1rem',
                 fontWeight: 600,
-                borderRadius: 3,
-                borderWidth: isDark ? 0 : 2,
-                color: isDark ? 'inherit' : 'white',
-                borderColor: isDark ? 'transparent' : 'white',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                '&:hover': {
-                  borderWidth: isDark ? 0 : 2,
-                  borderColor: isDark ? 'transparent' : 'white',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.2)',
-                  transform: 'translateY(-2px)'
-                },
-                transition: 'all 0.3s ease'
+                borderRadius: 2,
+                textTransform: 'none',
+                ...(isDark ? {
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    backgroundColor: alpha(theme.palette.primary.main, 0.1)
+                  }
+                } : {
+                  backgroundColor: 'white',
+                  color: theme.palette.primary.main,
+                  '&:hover': {
+                    backgroundColor: '#f5f5f5',
+                    transform: 'translateY(-2px)'
+                  }
+                }),
+                transition: 'all 0.2s ease'
               }}
             >
               Добавить технологию
@@ -161,27 +145,31 @@ function Home() {
           </Stack>
         </Box>
 
-        {/* Статистика в карточках */}
+        {/* Быстрая статистика */}
         {!loading && stats.total > 0 && (
-          <Grid container spacing={3} sx={{ mb: 6 }}>
+          <Grid container spacing={2} sx={{ mb: 4 }}>
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
+                background: isDark 
+                  ? alpha(theme.palette.success.main, 0.15)
+                  : 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                borderRadius: 3,
-                transition: 'transform 0.3s ease',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                borderRadius: 2,
+                border: isDark ? `1px solid ${alpha(theme.palette.success.main, 0.3)}` : 'none',
+                transition: 'all 0.2s ease',
                 '&:hover': {
-                  transform: 'translateY(-5px)'
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                 }
               }}>
-                <CardContent>
-                  <Typography color="success.main" variant="h4" sx={{ fontWeight: 700 }}>
+                <CardContent sx={{ py: 2 }}>
+                  <CheckCircleIcon sx={{ color: 'success.main', fontSize: 32, mb: 0.5 }} />
+                  <Typography color="success.main" variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
                     {stats.completed}
                   </Typography>
-                  <Typography color="text.secondary" variant="body2">
+                  <Typography color="text.secondary" variant="body2" sx={{ fontSize: '0.875rem' }}>
                     Завершено
                   </Typography>
                 </CardContent>
@@ -190,21 +178,25 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
+                background: isDark 
+                  ? alpha(theme.palette.warning.main, 0.15)
+                  : 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                borderRadius: 3,
-                transition: 'transform 0.3s ease',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                borderRadius: 2,
+                border: isDark ? `1px solid ${alpha(theme.palette.warning.main, 0.3)}` : 'none',
+                transition: 'all 0.2s ease',
                 '&:hover': {
-                  transform: 'translateY(-5px)'
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                 }
               }}>
-                <CardContent>
-                  <Typography color="warning.main" variant="h4" sx={{ fontWeight: 700 }}>
+                <CardContent sx={{ py: 2 }}>
+                  <ScheduleIcon sx={{ color: 'warning.main', fontSize: 32, mb: 0.5 }} />
+                  <Typography color="warning.main" variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
                     {stats.inProgress}
                   </Typography>
-                  <Typography color="text.secondary" variant="body2">
+                  <Typography color="text.secondary" variant="body2" sx={{ fontSize: '0.875rem' }}>
                     В процессе
                   </Typography>
                 </CardContent>
@@ -213,21 +205,25 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
+                background: isDark 
+                  ? alpha(theme.palette.info.main, 0.15)
+                  : 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                borderRadius: 3,
-                transition: 'transform 0.3s ease',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                borderRadius: 2,
+                border: isDark ? `1px solid ${alpha(theme.palette.info.main, 0.3)}` : 'none',
+                transition: 'all 0.2s ease',
                 '&:hover': {
-                  transform: 'translateY(-5px)'
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                 }
               }}>
-                <CardContent>
-                  <Typography color="info.main" variant="h4" sx={{ fontWeight: 700 }}>
+                <CardContent sx={{ py: 2 }}>
+                  <TrendingUpIcon sx={{ color: 'info.main', fontSize: 32, mb: 0.5 }} />
+                  <Typography color="info.main" variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
                     {stats.notStarted}
                   </Typography>
-                  <Typography color="text.secondary" variant="body2">
+                  <Typography color="text.secondary" variant="body2" sx={{ fontSize: '0.875rem' }}>
                     Не начато
                   </Typography>
                 </CardContent>
@@ -236,21 +232,24 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
+                background: isDark 
+                  ? alpha(theme.palette.primary.main, 0.15)
+                  : 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                borderRadius: 3,
-                transition: 'transform 0.3s ease',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                borderRadius: 2,
+                border: isDark ? `1px solid ${alpha(theme.palette.primary.main, 0.3)}` : 'none',
+                transition: 'all 0.2s ease',
                 '&:hover': {
-                  transform: 'translateY(-5px)'
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                 }
               }}>
-                <CardContent>
-                  <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+                <CardContent sx={{ py: 2 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, color: theme.palette.primary.main }}>
                     {completionPercentage}%
                   </Typography>
-                  <Typography color="text.secondary" variant="body2">
+                  <Typography color="text.secondary" variant="body2" sx={{ fontSize: '0.875rem' }}>
                     Прогресс
                   </Typography>
                 </CardContent>
@@ -259,61 +258,53 @@ function Home() {
           </Grid>
         )}
 
-        {/* Dashboard */}
+        {/* Dashboard без белой обертки */}
         {!loading && technologies && technologies.length > 0 && (
-          <Paper 
-            elevation={0}
-            sx={{ 
-              mb: 6,
-              background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 4,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              overflow: 'hidden',
-              border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none'
-            }}
-          >
+          <Box sx={{ mb: 4 }}>
             <Dashboard technologies={technologies} />
-          </Paper>
+          </Box>
         )}
 
-        {/* Особенности */}
-        <Grid container spacing={3}>
+        {/* Особенности - компактные карточки */}
+        <Grid container spacing={2}>
           {[
-            { icon: TrendingUpIcon, title: 'Отслеживание прогресса', desc: 'Отмечайте статус изучения каждой технологии и визуализируйте свой прогресс' },
-            { icon: NotesIcon, title: 'Заметки', desc: 'Сохраняйте важные моменты, ссылки и заметки по каждой технологии' },
-            { icon: SearchIcon, title: 'Поиск и фильтрация', desc: 'Быстро находите нужные технологии с помощью поиска и фильтров' },
-            { icon: SaveIcon, title: 'Автосохранение', desc: 'Все данные сохраняются автоматически в браузере' },
-            { icon: RocketLaunchIcon, title: 'Material Design', desc: 'Современный интерфейс с поддержкой светлой и тёмной темы' },
-            { icon: AddCircleOutlineIcon, title: 'Импорт/Экспорт', desc: 'Работайте с данными через JSON файлы и drag-and-drop' }
+            { icon: TrendingUpIcon, title: 'Отслеживание прогресса', desc: 'Визуализируйте свой прогресс изучения' },
+            { icon: NotesIcon, title: 'Заметки', desc: 'Сохраняйте важные моменты и ссылки' },
+            { icon: SearchIcon, title: 'Поиск и фильтрация', desc: 'Быстро находите нужные технологии' },
+            { icon: SaveIcon, title: 'Автосохранение', desc: 'Данные сохраняются автоматически' }
           ].map((feature, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <Grid item xs={12} sm={6} md={3} key={index}>
               <Card sx={{
                 height: '100%',
-                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
+                background: isDark 
+                  ? alpha(theme.palette.background.paper, 0.6)
+                  : 'rgba(255, 255, 255, 0.7)',
                 backdropFilter: 'blur(10px)',
-                borderRadius: 3,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                transition: 'all 0.3s ease',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                transition: 'all 0.2s ease',
+                border: isDark ? `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none',
                 '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+                  background: isDark 
+                    ? alpha(theme.palette.background.paper, 0.8)
+                    : 'rgba(255, 255, 255, 0.9)'
                 }
               }}>
-                <CardContent sx={{ p: 3 }}>
+                <CardContent sx={{ p: 2.5, textAlign: 'center' }}>
                   <Box sx={{ 
                     display: 'flex', 
-                    alignItems: 'center', 
-                    mb: 2,
+                    justifyContent: 'center',
+                    mb: 1.5,
                     color: theme.palette.primary.main
                   }}>
-                    <feature.icon sx={{ fontSize: 40, mr: 2 }} />
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      {feature.title}
-                    </Typography>
+                    <feature.icon sx={{ fontSize: 36 }} />
                   </Box>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5, fontSize: '1rem' }}>
+                    {feature.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
                     {feature.desc}
                   </Typography>
                 </CardContent>
