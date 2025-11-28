@@ -1,82 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 import TechnologyCard from './components/TechnologyCard'
 import ProgressHeader from './components/ProgressHeader'
 import QuickActions from './components/QuickActions'
 import FilterTabs from './components/FilterTabs'
 import SearchBox from './components/SearchBox'
+import ProgressBar from './components/ProgressBar'
+import useTechnologies from './hooks/useTechnologies'
 
 function App() {
-  // Начальные данные с полем notes
-  const initialTechnologies = [
-    { id: 1, title: 'React Components', description: 'Изучение базовых компонентов', status: 'not-started', notes: '' },
-    { id: 2, title: 'JSX Syntax', description: 'Освоение синтаксиса JSX', status: 'not-started', notes: '' },
-    { id: 3, title: 'State Management', description: 'Работа с состоянием компонентов', status: 'not-started', notes: '' },
-    { id: 4, title: 'Hooks', description: 'Изучение хуков React', status: 'not-started', notes: '' },
-    { id: 5, title: 'Event Handling', description: 'Обработка событий в React', status: 'not-started', notes: '' }
-  ]
-
-  const [technologies, setTechnologies] = useState(initialTechnologies)
+  const { technologies, updateStatus, updateNotes, markAllCompleted, resetAll, progress } = useTechnologies()
   const [activeFilter, setActiveFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Загружаем данные из localStorage при первом рендере
-  useEffect(() => {
-    const saved = localStorage.getItem('techTrackerData')
-    if (saved) {
-      try {
-        const parsedData = JSON.parse(saved)
-        setTechnologies(parsedData)
-        console.log('Данные загружены из localStorage')
-      } catch (error) {
-        console.error('Ошибка при загрузке данных из localStorage:', error)
-      }
-    }
-  }, [])
-
-  // Сохраняем технологии в localStorage при любом изменении
-  useEffect(() => {
-    localStorage.setItem('techTrackerData', JSON.stringify(technologies))
-    console.log('Данные сохранены в localStorage')
-  }, [technologies])
-
-  // Функция для изменения статуса технологии
+  // Функция для изменения статуса технологии (циклическое переключение)
   const handleStatusChange = (id) => {
-    setTechnologies(prevTechnologies =>
-      prevTechnologies.map(tech => {
-        if (tech.id === id) {
-          // Циклическое переключение: not-started → in-progress → completed → not-started
-          const statusOrder = ['not-started', 'in-progress', 'completed']
-          const currentIndex = statusOrder.indexOf(tech.status)
-          const nextIndex = (currentIndex + 1) % statusOrder.length
-          return { ...tech, status: statusOrder[nextIndex] }
-        }
-        return tech
-      })
-    )
-  }
-
-  // Функция для обновления заметок технологии
-  const updateTechnologyNotes = (techId, newNotes) => {
-    setTechnologies(prevTech =>
-      prevTech.map(tech =>
-        tech.id === techId ? { ...tech, notes: newNotes } : tech
-      )
-    )
-  }
-
-  // Функция для отметки всех как выполненных
-  const markAllCompleted = () => {
-    setTechnologies(prevTechnologies =>
-      prevTechnologies.map(tech => ({ ...tech, status: 'completed' }))
-    )
-  }
-
-  // Функция для сброса всех статусов
-  const resetAllStatuses = () => {
-    setTechnologies(prevTechnologies =>
-      prevTechnologies.map(tech => ({ ...tech, status: 'not-started' }))
-    )
+    const tech = technologies.find(t => t.id === id)
+    if (tech) {
+      const statusOrder = ['not-started', 'in-progress', 'completed']
+      const currentIndex = statusOrder.indexOf(tech.status)
+      const nextIndex = (currentIndex + 1) % statusOrder.length
+      updateStatus(id, statusOrder[nextIndex])
+    }
   }
 
   // Функция для случайного выбора следующей технологии
@@ -106,11 +51,22 @@ function App() {
 
   return (
     <div className="app-container">
+      <header className="app-header">
+        <h1 className="app-title">Трекер изучения технологий</h1>
+        <ProgressBar
+          progress={progress}
+          label="Общий прогресс"
+          color="#4CAF50"
+          animated={true}
+          height={20}
+        />
+      </header>
       <ProgressHeader technologies={technologies} />
       <QuickActions
         onMarkAllCompleted={markAllCompleted}
-        onResetAll={resetAllStatuses}
+        onResetAll={resetAll}
         onRandomNext={randomNextTechnology}
+        technologies={technologies}
       />
       <SearchBox 
         searchQuery={searchQuery} 
@@ -128,7 +84,7 @@ function App() {
             status={tech.status}
             notes={tech.notes}
             onStatusChange={handleStatusChange}
-            onNotesChange={updateTechnologyNotes}
+            onNotesChange={updateNotes}
           />
         ))}
       </div>
