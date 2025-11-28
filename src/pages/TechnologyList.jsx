@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { Container, Grid, CircularProgress, Alert, Box } from '@mui/material'
+import { Container, Grid, CircularProgress, Alert, Box, Typography } from '@mui/material'
 import useTechnologiesApi from '../hooks/useTechnologiesApi'
 import { useNotification } from '../components/NotificationProvider'
 import TechnologyCard from '../components/TechnologyCard'
@@ -218,7 +218,7 @@ function TechnologyList() {
           </Link>
         </div>
       )}
-    </div>
+    </Container>
   )
 }
 
