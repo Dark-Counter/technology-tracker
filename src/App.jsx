@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { ThemeProvider, CssBaseline } from '@mui/material'
+import { useAppTheme } from './hooks/useTheme'
+import { NotificationProvider } from './components/NotificationProvider'
 import './App.css'
 import Navigation from './components/Navigation'
 import Home from './pages/Home'
@@ -7,7 +10,7 @@ import TechnologyDetail from './pages/TechnologyDetail'
 import AddTechnology from './pages/AddTechnology'
 import DataManagement from './pages/DataManagement'
 
-function App() {
+function AppContent() {
   return (
     <Router basename="/technology-tracker">
       <div className="app-container">
@@ -23,6 +26,19 @@ function App() {
         </main>
       </div>
     </Router>
+  )
+}
+
+function App() {
+  const { theme } = useAppTheme()
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <NotificationProvider>
+        <AppContent />
+      </NotificationProvider>
+    </ThemeProvider>
   )
 }
 

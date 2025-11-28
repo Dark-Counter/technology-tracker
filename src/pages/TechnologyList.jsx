@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Container, Grid, CircularProgress, Alert, Box } from '@mui/material'
 import useTechnologiesApi from '../hooks/useTechnologiesApi'
+import { useNotification } from '../components/NotificationProvider'
 import TechnologyCard from '../components/TechnologyCard'
+import SimpleTechCard from '../components/SimpleTechCard'
 import SearchBox from '../components/SearchBox'
 import FilterTabs from '../components/FilterTabs'
 import ProgressHeader from '../components/ProgressHeader'
@@ -15,8 +18,10 @@ import './TechnologyList.css'
 
 function TechnologyList() {
   const { technologies, loading, error, updateTechnology, addTechnology, refetch } = useTechnologiesApi()
+  const { showNotification } = useNotification()
   const [activeFilter, setActiveFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [useMUICards, setUseMUICards] = useState(false)
 
   // Функция для изменения статуса технологии (циклическое переключение)
   const handleStatusChange = async (id) => {
@@ -26,7 +31,14 @@ function TechnologyList() {
       const currentIndex = statusOrder.indexOf(tech.status)
       const nextIndex = (currentIndex + 1) % statusOrder.length
       await updateTechnology(id, { status: statusOrder[nextIndex] })
+      showNotification('Статус технологии обновлен', 'success')
     }
+  }
+
+  // Функция для изменения статуса (для MUI карточек)
+  const handleMUIStatusChange = async (id, newStatus) => {
+    await updateTechnology(id, { status: newStatus })
+    showNotification('Статус технологии обновлен', 'success')
   }
 
   // Функция для обновления заметок
@@ -94,31 +106,31 @@ function TechnologyList() {
 
   if (loading) {
     return (
-      <div className="page">
-        <div className="loading-state">
-          <div className="spinner"></div>
-          <p>Загрузка технологий...</p>
-        </div>
-      </div>
+      <Container maxWidth="lg" sx={{ py: 4, textAlign: 'center' }}>
+        <CircularProgress />
+        <Box sx={{ mt: 2 }}>
+          <Typography>Загрузка технологий...</Typography>
+        </Box>
+      </Container>
     )
   }
 
   if (error) {
     return (
-      <div className="page">
-        <div className="error-state">
-          <h2>Произошла ошибка</h2>
-          <p>{error}</p>
-          <button onClick={refetch} className="btn btn-primary">
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Alert severity="error" action={
+          <button onClick={refetch} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer' }}>
             Попробовать снова
           </button>
-        </div>
-      </div>
+        }>
+          {error}
+        </Alert>
+      </Container>
     )
   }
 
   return (
-    <div className="page">
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       <div className="page-header">
         <h1>Все технологии</h1>
         <Link to="/add-technology" className="btn btn-primary">
@@ -154,20 +166,49 @@ function TechnologyList() {
       />
       <FilterTabs activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       
-      <div className="technologies-list">
-        {filteredTechnologies.map(tech => (
-          <TechnologyCard
-            key={tech.id}
-            id={tech.id}
-            title={tech.title}
-            description={tech.description}
-            status={tech.status}
-            notes={tech.notes || ''}
-            onStatusChange={handleStatusChange}
-            onNotesChange={handleNotesChange}
-          />
-        ))}
-      </div>
+      <Box sx={{ mb: 2, textAlign: 'right' }}>
+        <button
+          onClick={() => setUseMUICards(!useMUICards)}
+          style={{
+            padding: '0.5rem 1rem',
+            background: useMUICards ? '#1976d2' : '#e0e0e0',
+            color: useMUICards ? 'white' : '#333',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          {useMUICards ? 'Показать обычные карточки' : 'Показать MUI карточки'}
+        </button>
+      </Box>
+
+      {useMUICards ? (
+        <Grid container spacing={2}>
+          {filteredTechnologies.map(tech => (
+            <Grid item xs={12} sm={6} md={4} key={tech.id}>
+              <SimpleTechCard
+                technology={tech}
+                onStatusChange={handleMUIStatusChange}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <div className="technologies-list">
+          {filteredTechnologies.map(tech => (
+            <TechnologyCard
+              key={tech.id}
+              id={tech.id}
+              title={tech.title}
+              description={tech.description}
+              status={tech.status}
+              notes={tech.notes || ''}
+              onStatusChange={handleStatusChange}
+              onNotesChange={handleNotesChange}
+            />
+          ))}
+        </div>
+      )}
       
       {filteredTechnologies.length === 0 && (
         <div className="empty-state">

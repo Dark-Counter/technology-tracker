@@ -1,47 +1,98 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { Button, Container, Grid, Card, CardContent, Typography, Box } from '@mui/material'
+import Dashboard from '../components/Dashboard'
+import useTechnologiesApi from '../hooks/useTechnologiesApi'
 import './Page.css'
 import './Home.css'
 
 function Home() {
+  const navigate = useNavigate()
+  const { technologies, loading } = useTechnologiesApi()
+
   return (
-    <div className="page">
-      <div className="home-hero">
-        <h1>Добро пожаловать в Трекер технологий!</h1>
-        <p className="hero-subtitle">
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <Typography variant="h3" component="h1" gutterBottom>
+          Добро пожаловать в Трекер технологий!
+        </Typography>
+        <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
           Отслеживайте свой прогресс в изучении технологий разработки
-        </p>
-        <div className="hero-actions">
-          <Link to="/technologies" className="btn btn-primary">
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => navigate('/technologies')}
+          >
             Посмотреть все технологии
-          </Link>
-          <Link to="/add-technology" className="btn btn-secondary">
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={() => navigate('/add-technology')}
+          >
             Добавить технологию
-          </Link>
-        </div>
-      </div>
-      
-      <div className="features">
-        <h2>Наши возможности:</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <h3>📊 Отслеживание прогресса</h3>
-            <p>Отмечайте статус изучения каждой технологии</p>
-          </div>
-          <div className="feature-card">
-            <h3>📝 Заметки</h3>
-            <p>Сохраняйте важные моменты по каждой технологии</p>
-          </div>
-          <div className="feature-card">
-            <h3>🔍 Поиск и фильтрация</h3>
-            <p>Быстро находите нужные технологии</p>
-          </div>
-          <div className="feature-card">
-            <h3>💾 Автосохранение</h3>
-            <p>Все данные сохраняются автоматически</p>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </Box>
+
+      {!loading && technologies && technologies.length > 0 && (
+        <Box sx={{ mb: 4 }}>
+          <Dashboard technologies={technologies} />
+        </Box>
+      )}
+
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                📊 Отслеживание прогресса
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Отмечайте статус изучения каждой технологии
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                📝 Заметки
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Сохраняйте важные моменты по каждой технологии
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                🔍 Поиск и фильтрация
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Быстро находите нужные технологии
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                💾 Автосохранение
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Все данные сохраняются автоматически
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }
 
