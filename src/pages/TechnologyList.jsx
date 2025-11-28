@@ -7,6 +7,9 @@ import FilterTabs from '../components/FilterTabs'
 import ProgressHeader from '../components/ProgressHeader'
 import QuickActions from '../components/QuickActions'
 import RoadmapImporter from '../components/RoadmapImporter'
+import DeadlineForm from '../components/DeadlineForm'
+import BulkStatusEditor from '../components/BulkStatusEditor'
+import DataImportExport from '../components/DataImportExport'
 import './Page.css'
 import './TechnologyList.css'
 
@@ -63,6 +66,17 @@ function TechnologyList() {
     await addTechnology(techData)
   }
 
+  // Функция для обновления дедлайна
+  const handleDeadlineUpdate = async (techId, updates) => {
+    await updateTechnology(techId, updates)
+  }
+
+  // Функция для массового обновления статусов
+  const handleBulkStatusUpdate = async (techIds, newStatus) => {
+    const updates = techIds.map(id => updateTechnology(id, { status: newStatus }))
+    await Promise.all(updates)
+  }
+
   // Фильтрация технологий по статусу и поисковому запросу
   const filteredTechnologies = technologies.filter(tech => {
     const matchesFilter = activeFilter === 'all' || tech.status === activeFilter
@@ -113,6 +127,18 @@ function TechnologyList() {
       </div>
       
       <RoadmapImporter onImport={handleImport} />
+      
+      <DeadlineForm 
+        technologies={technologies} 
+        onUpdate={handleDeadlineUpdate}
+      />
+      
+      <BulkStatusEditor
+        technologies={technologies}
+        onBulkUpdate={handleBulkStatusUpdate}
+      />
+      
+      <DataImportExport />
       
       <ProgressHeader technologies={technologies} />
       <QuickActions

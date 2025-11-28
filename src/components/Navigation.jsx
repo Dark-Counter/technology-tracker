@@ -36,6 +36,14 @@ function Navigation() {
             Добавить технологию
           </Link>
         </li>
+        <li>
+          <Link
+            to="/data-management"
+            className={location.pathname === '/data-management' ? 'active' : ''}
+          >
+            Управление данными
+          </Link>
+        </li>
       </ul>
     </nav>
   )
