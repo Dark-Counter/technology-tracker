@@ -1,0 +1,68 @@
+.roadmap-importer {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.roadmap-importer h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.import-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.import-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.import-button:hover:not(:disabled) {
+  background-color: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.import-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.import-success {
+  text-align: center;
+}
+
+.import-success p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.import-errors {
+  color: #f44336;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.import-error {
+  text-align: center;
+}
+
+.import-error p {
+  color: #f44336;
+  margin-bottom: 1rem;
+}
+

@@ -1,13 +1,13 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import useTechnologies from '../hooks/useTechnologies'
+import useTechnologiesApi from '../hooks/useTechnologiesApi'
 import './Page.css'
 import './TechnologyDetail.css'
 
 function TechnologyDetail() {
   const { techId } = useParams()
   const navigate = useNavigate()
-  const { technologies, updateStatus, setTechnologies } = useTechnologies()
+  const { technologies, updateTechnology, deleteTechnology, loading } = useTechnologiesApi()
   const [technology, setTechnology] = useState(null)
 
   useEffect(() => {
@@ -15,14 +15,14 @@ function TechnologyDetail() {
     setTechnology(tech)
   }, [techId, technologies])
 
-  const handleStatusChange = (newStatus) => {
-    updateStatus(parseInt(techId), newStatus)
+  const handleStatusChange = async (newStatus) => {
+    await updateTechnology(parseInt(techId), { status: newStatus })
     setTechnology({ ...technology, status: newStatus })
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm('Вы уверены, что хотите удалить эту технологию?')) {
-      setTechnologies(prev => prev.filter(t => t.id !== parseInt(techId)))
+      await deleteTechnology(parseInt(techId))
       navigate('/technologies')
     }
   }

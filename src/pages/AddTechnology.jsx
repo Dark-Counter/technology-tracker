@@ -58,7 +58,6 @@ function AddTechnology() {
       : 1
 
     const newTechnology = {
-      id: newId,
       title: formData.title.trim(),
       description: formData.description.trim(),
       category: formData.category,
@@ -66,8 +65,7 @@ function AddTechnology() {
       notes: formData.notes.trim()
     }
 
-    const updated = [...technologies, newTechnology]
-    setTechnologies(updated)
+    await addTechnology(newTechnology)
     
     // Перенаправляем на страницу списка
     navigate('/technologies')
@@ -136,9 +134,19 @@ function AddTechnology() {
           />
         </div>
 
+        {error && (
+          <div className="form-error">
+            <p>{error}</p>
+          </div>
+        )}
+        
         <div className="form-actions">
-          <button type="submit" className="btn btn-primary">
-            Добавить технологию
+          <button 
+            type="submit" 
+            className="btn btn-primary"
+            disabled={loading}
+          >
+            {loading ? 'Добавление...' : 'Добавить технологию'}
           </button>
           <button 
             type="button" 
