@@ -9,7 +9,7 @@ import {
   Box,
   Paper,
   Stack,
-  Chip
+  useTheme
 } from '@mui/material'
 import Dashboard from '../components/Dashboard'
 import useTechnologiesApi from '../hooks/useTechnologiesApi'
@@ -25,6 +25,8 @@ import './Home.css'
 function Home() {
   const navigate = useNavigate()
   const { technologies, loading } = useTechnologiesApi()
+  const theme = useTheme()
+  const isDark = theme.palette.mode === 'dark'
 
   const stats = {
     total: technologies?.length || 0,
@@ -40,38 +42,45 @@ function Home() {
   return (
     <Box sx={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: isDark 
+        ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+        : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      pb: 4
     }}>
       {/* Декоративные элементы */}
-      <Box sx={{
-        position: 'absolute',
-        top: -100,
-        right: -100,
-        width: 400,
-        height: 400,
-        borderRadius: '50%',
-        background: 'rgba(255, 255, 255, 0.1)',
-        filter: 'blur(60px)'
-      }} />
-      <Box sx={{
-        position: 'absolute',
-        bottom: -150,
-        left: -150,
-        width: 500,
-        height: 500,
-        borderRadius: '50%',
-        background: 'rgba(255, 255, 255, 0.1)',
-        filter: 'blur(80px)'
-      }} />
+      {!isDark && (
+        <>
+          <Box sx={{
+            position: 'absolute',
+            top: -100,
+            right: -100,
+            width: 400,
+            height: 400,
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.1)',
+            filter: 'blur(60px)'
+          }} />
+          <Box sx={{
+            position: 'absolute',
+            bottom: -150,
+            left: -150,
+            width: 500,
+            height: 500,
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.1)',
+            filter: 'blur(80px)'
+          }} />
+        </>
+      )}
 
       <Container maxWidth="lg" sx={{ py: 6, position: 'relative', zIndex: 1 }}>
         {/* Hero секция */}
         <Box sx={{ 
           textAlign: 'center', 
           mb: 6,
-          color: 'white'
+          color: isDark ? 'text.primary' : 'white'
         }}>
           <Typography 
             variant="h2" 
@@ -80,7 +89,7 @@ function Home() {
             sx={{
               fontWeight: 700,
               mb: 2,
-              textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+              textShadow: isDark ? 'none' : '0 2px 10px rgba(0,0,0,0.2)'
             }}
           >
             🚀 Трекер технологий
@@ -89,7 +98,7 @@ function Home() {
             variant="h5" 
             sx={{ 
               mb: 4,
-              opacity: 0.95,
+              opacity: isDark ? 0.9 : 0.95,
               fontWeight: 300
             }}
           >
@@ -123,7 +132,7 @@ function Home() {
               Посмотреть все технологии
             </Button>
             <Button
-              variant="outlined"
+              variant={isDark ? "contained" : "outlined"}
               size="large"
               onClick={() => navigate('/add-technology')}
               startIcon={<AddCircleOutlineIcon />}
@@ -133,15 +142,15 @@ function Home() {
                 fontSize: '1.1rem',
                 fontWeight: 600,
                 borderRadius: 3,
-                borderWidth: 2,
-                color: 'white',
-                borderColor: 'white',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderWidth: isDark ? 0 : 2,
+                color: isDark ? 'inherit' : 'white',
+                borderColor: isDark ? 'transparent' : 'white',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(10px)',
                 '&:hover': {
-                  borderWidth: 2,
-                  borderColor: 'white',
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  borderWidth: isDark ? 0 : 2,
+                  borderColor: isDark ? 'transparent' : 'white',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.2)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.3s ease'
@@ -158,11 +167,12 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: 'rgba(255, 255, 255, 0.95)',
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                 borderRadius: 3,
                 transition: 'transform 0.3s ease',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
                 '&:hover': {
                   transform: 'translateY(-5px)'
                 }
@@ -180,11 +190,12 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: 'rgba(255, 255, 255, 0.95)',
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                 borderRadius: 3,
                 transition: 'transform 0.3s ease',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
                 '&:hover': {
                   transform: 'translateY(-5px)'
                 }
@@ -202,11 +213,12 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: 'rgba(255, 255, 255, 0.95)',
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                 borderRadius: 3,
                 transition: 'transform 0.3s ease',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
                 '&:hover': {
                   transform: 'translateY(-5px)'
                 }
@@ -224,17 +236,18 @@ function Home() {
             <Grid item xs={6} sm={3}>
               <Card sx={{ 
                 textAlign: 'center',
-                background: 'rgba(255, 255, 255, 0.95)',
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                 borderRadius: 3,
                 transition: 'transform 0.3s ease',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
                 '&:hover': {
                   transform: 'translateY(-5px)'
                 }
               }}>
                 <CardContent>
-                  <Typography variant="h4" sx={{ fontWeight: 700, color: '#667eea' }}>
+                  <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
                     {completionPercentage}%
                   </Typography>
                   <Typography color="text.secondary" variant="body2">
@@ -252,11 +265,12 @@ function Home() {
             elevation={0}
             sx={{ 
               mb: 6,
-              background: 'rgba(255, 255, 255, 0.95)',
+              background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',
               borderRadius: 4,
               boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none'
             }}
           >
             <Dashboard technologies={technologies} />
@@ -265,197 +279,47 @@ function Home() {
 
         {/* Особенности */}
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 3,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-              }
-            }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  mb: 2,
-                  color: '#667eea'
-                }}>
-                  <TrendingUpIcon sx={{ fontSize: 40, mr: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Отслеживание прогресса
+          {[
+            { icon: TrendingUpIcon, title: 'Отслеживание прогресса', desc: 'Отмечайте статус изучения каждой технологии и визуализируйте свой прогресс' },
+            { icon: NotesIcon, title: 'Заметки', desc: 'Сохраняйте важные моменты, ссылки и заметки по каждой технологии' },
+            { icon: SearchIcon, title: 'Поиск и фильтрация', desc: 'Быстро находите нужные технологии с помощью поиска и фильтров' },
+            { icon: SaveIcon, title: 'Автосохранение', desc: 'Все данные сохраняются автоматически в браузере' },
+            { icon: RocketLaunchIcon, title: 'Material Design', desc: 'Современный интерфейс с поддержкой светлой и тёмной темы' },
+            { icon: AddCircleOutlineIcon, title: 'Импорт/Экспорт', desc: 'Работайте с данными через JSON файлы и drag-and-drop' }
+          ].map((feature, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card sx={{
+                height: '100%',
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: 3,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                transition: 'all 0.3s ease',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
+                }
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    mb: 2,
+                    color: theme.palette.primary.main
+                  }}>
+                    <feature.icon sx={{ fontSize: 40, mr: 2 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      {feature.title}
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {feature.desc}
                   </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  Отмечайте статус изучения каждой технологии и визуализируйте свой прогресс
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 3,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-              }
-            }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  mb: 2,
-                  color: '#667eea'
-                }}>
-                  <NotesIcon sx={{ fontSize: 40, mr: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Заметки
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  Сохраняйте важные моменты, ссылки и заметки по каждой технологии
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 3,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-              }
-            }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  mb: 2,
-                  color: '#667eea'
-                }}>
-                  <SearchIcon sx={{ fontSize: 40, mr: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Поиск и фильтрация
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  Быстро находите нужные технологии с помощью поиска и фильтров
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 3,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-              }
-            }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  mb: 2,
-                  color: '#667eea'
-                }}>
-                  <SaveIcon sx={{ fontSize: 40, mr: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Автосохранение
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  Все данные сохраняются автоматически в браузере
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 3,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-              }
-            }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  mb: 2,
-                  color: '#667eea'
-                }}>
-                  <RocketLaunchIcon sx={{ fontSize: 40, mr: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Material Design
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  Современный интерфейс с поддержкой светлой и тёмной темы
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 3,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-              }
-            }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  mb: 2,
-                  color: '#667eea'
-                }}>
-                  <AddCircleOutlineIcon sx={{ fontSize: 40, mr: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Импорт/Экспорт
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  Работайте с данными через JSON файлы и drag-and-drop
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </Box>
