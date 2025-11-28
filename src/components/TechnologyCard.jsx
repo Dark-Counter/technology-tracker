@@ -1,6 +1,7 @@
 import './TechnologyCard.css'
+import TechnologyNotes from './TechnologyNotes'
 
-function TechnologyCard({ id, title, description, status, onStatusChange }) {
+function TechnologyCard({ id, title, description, status, notes, onStatusChange, onNotesChange }) {
   const getStatusClass = () => {
     switch (status) {
       case 'completed':
@@ -64,6 +65,11 @@ function TechnologyCard({ id, title, description, status, onStatusChange }) {
         <span className="status-icon">{getStatusIcon()}</span>
       </div>
       <p className="card-description">{description}</p>
+      <TechnologyNotes
+        notes={notes || ''}
+        onNotesChange={onNotesChange}
+        techId={id}
+      />
       <div className="card-footer">
         <span className="status-badge">{getStatusText()}</span>
         <span className="click-hint">Нажмите для изменения статуса</span>
