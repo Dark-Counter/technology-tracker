@@ -9,7 +9,6 @@ function ProgressHeader({ technologies }) {
 
   return (
     <div className="progress-header">
-      <h1 className="header-title">Трекер изучения технологий</h1>
       <div className="stats-container">
         <div className="stat-item">
           <span className="stat-label">Всего:</span>
