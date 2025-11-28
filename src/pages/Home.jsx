@@ -1,22 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { 
   Button, 
-  Container, 
   Grid, 
-  Card, 
-  CardContent, 
-  Typography, 
   Box,
   Stack,
   useTheme,
-  alpha,
+  Typography,
   LinearProgress
 } from '@mui/material'
 import useTechnologiesApi from '../hooks/useTechnologiesApi'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import PercentIcon from '@mui/icons-material/Percent'
 import './Page.css'
 import './Home.css'
 
@@ -43,9 +35,14 @@ function Home() {
       width: '100%',
       background: isDark ? '#0b1020' : '#f6f7fb',
       pt: 8,
-      pb: 4
+      pb: 4,
+      px: { xs: 2, sm: 3 }
     }}>
-      <Container maxWidth="md" sx={{ px: { xs: 2, sm: 3 } }}>
+      <Box sx={{ 
+        maxWidth: '920px',
+        margin: '0 auto',
+        width: '100%'
+      }}>
         {/* Hero Card */}
         <Box sx={{
           padding: { xs: 3, sm: 4 },
@@ -426,44 +423,45 @@ function Home() {
             { icon: '💾', title: 'Автосохранение', desc: 'Данные сохраняются автоматически' }
           ].map((feature, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card sx={{
-                background: '#fff',
+              <Box sx={{
+                background: isDark ? 'rgba(255,255,255,0.05)' : '#fff',
                 padding: 2.5,
                 borderRadius: 3,
-                boxShadow: '0 6px 18px rgba(20,28,80,0.06)',
+                boxShadow: isDark ? '0 6px 18px rgba(0,0,0,0.3)' : '0 6px 18px rgba(20,28,80,0.06)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 1.5,
                 alignItems: 'flex-start',
                 minHeight: 98,
+                border: isDark ? '1px solid rgba(255,255,255,0.1)' : 'none',
                 '&:hover': {
-                  boxShadow: '0 8px 24px rgba(20,28,80,0.1)',
+                  boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.4)' : '0 8px 24px rgba(20,28,80,0.1)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.2s ease'
               }}>
                 <Box sx={{ fontSize: '20px' }}>{feature.icon}</Box>
-                <Typography variant="h6" sx={{ 
+                <Typography sx={{ 
                   margin: 0, 
                   fontSize: '14px', 
                   fontWeight: 600,
-                  color: '#1b2430'
+                  color: isDark ? '#dbe9ff' : '#1b2430'
                 }}>
                   {feature.title}
                 </Typography>
                 <Typography sx={{ 
                   margin: 0, 
-                  color: '#555', 
+                  color: isDark ? 'rgba(219,233,255,0.7)' : '#555', 
                   fontSize: '13px',
                   lineHeight: 1.5
                 }}>
                   {feature.desc}
                 </Typography>
-              </Card>
+              </Box>
             </Grid>
           ))}
         </Grid>
-      </Container>
+      </Box>
     </Box>
   )
 }
