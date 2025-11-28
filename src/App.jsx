@@ -9,7 +9,7 @@ import DataManagement from './pages/DataManagement'
 
 function App() {
   return (
-    <Router>
+    <Router basename="/technology-tracker">
       <div className="app-container">
         <Navigation />
         <main className="main-content">
