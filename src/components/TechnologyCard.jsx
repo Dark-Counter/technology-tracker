@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './TechnologyCard.css'
 import TechnologyNotes from './TechnologyNotes'
 
@@ -72,7 +73,12 @@ function TechnologyCard({ id, title, description, status, notes, onStatusChange,
       />
       <div className="card-footer">
         <span className="status-badge">{getStatusText()}</span>
-        <span className="click-hint">Нажмите для изменения статуса</span>
+        <div className="card-actions">
+          <span className="click-hint">Нажмите для изменения статуса</span>
+          <Link to={`/technology/${id}`} className="detail-link" onClick={(e) => e.stopPropagation()}>
+            Подробнее →
+          </Link>
+        </div>
       </div>
     </div>
   )
