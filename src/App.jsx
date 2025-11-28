@@ -5,7 +5,6 @@ import ProgressHeader from './components/ProgressHeader'
 import QuickActions from './components/QuickActions'
 import FilterTabs from './components/FilterTabs'
 import SearchBox from './components/SearchBox'
-import ProgressBar from './components/ProgressBar'
 import useTechnologies from './hooks/useTechnologies'
 
 function App() {
@@ -53,13 +52,6 @@ function App() {
     <div className="app-container">
       <header className="app-header">
         <h1 className="app-title">Трекер изучения технологий</h1>
-        <ProgressBar
-          progress={progress}
-          label="Общий прогресс"
-          color="#4CAF50"
-          animated={true}
-          height={20}
-        />
       </header>
       <ProgressHeader technologies={technologies} />
       <QuickActions
